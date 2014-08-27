@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router();
+var express = require('express')
+var router = express.Router()
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -9,8 +9,8 @@ router.get('/', function(req, res) {
       geoip: res.locals.geo
     })
   } else {
-    res.render('index', { title: 'Express' });
+    res.render('index')
   }
 })
 
-module.exports = router;
+module.exports = router
