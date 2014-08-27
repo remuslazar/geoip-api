@@ -65,7 +65,7 @@ app.use(function(req, res, next) {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
     res.status(err.status || 500)
-    if (req.jsonp) return res.json({success: false, error: err})
+    if (req.json) return res.jsonp({success: false, error: err})
     res.render('error', {
         message: err.message,
         error: {}
