@@ -9,8 +9,8 @@ For Web-Browsers (or other clients which accept HTML) there is a
 simple GUI, for other clients or Ajax-Requests the data will be
 returned JSON formatted.
 
-Default the Client IP-Address will be used for the lookup, but a
-different hostname/ip can be also used.
+By default the Client IP-Address will be used for the lookup, but a
+different hostname/ip can be also optionally supplied.
 
 
 Parameters
