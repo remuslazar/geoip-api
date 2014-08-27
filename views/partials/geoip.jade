@@ -1,0 +1,15 @@
+dl
+  if ips
+    dt IP(s)
+    each ip in ips
+      dd= ip
+  if geo.country
+    dt Country
+    dd= geo.country
+  if geo.city
+    dt City
+    dd= geo.city
+  dt Coordinates
+  dd
+    - var ll = geo.ll[0]+','+geo.ll[1]
+    a(target='_blank', href='http://maps.google.com/?ie=UTF8&q='+encodeURIComponent(host)+'&hq=&ll='+ll+'&z=13')= geo.ll
