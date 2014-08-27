@@ -26,9 +26,17 @@ e.g. `GET /?host=79.250.123.182`
 Notice: When using a hostname, only the first resolved IPv4 address
 will be used for the GeoIP lookup.
 
+JSONP Support
+-------------
+
+Support for [JSONP](http://en.wikipedia.org/wiki/JSONP) requests is
+available. Simply provide the name of the callback function as a query
+parameter called `jsonp` (see example section below)
 
 Example
 -------
+
+### Regular API-Call
 
 ```
 $ curl -H accept:application/json http://localhost:3000/?host=www.google.com | prettyjson
@@ -44,6 +52,17 @@ geoip:
   ll:
     - 37.4192
     - -122.0574
+```
+
+### JSONP Request
+
+For JSON usage specify the callback function using the `jsonp` query
+parameter.
+
+```
+curl 'http://localhost:3000/?host=www.google.com&jsonp=geoip'
+
+typeof geoip === 'function' && geoip({"success":true,"geoip":{"range":[2915172352,2915237887],"country":"US","region":"CA","city":"Mountain View","ll":[37.4192,-122.0574]}});
 ```
 
 Technical Details

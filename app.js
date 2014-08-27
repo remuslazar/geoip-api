@@ -16,12 +16,15 @@ app.use(favicon())
 app.use(logger('dev'))
 app.use(express.static(path.join(__dirname, 'public')))
 
+app.set('jsonp callback name', 'jsonp');
+
 function isIp(name) {
   return name.match(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/)
 }
 
 app.use(function(req, res, next) {
-  req.json = req.xhr || !req.accepts('html')
+
+  req.json = req.query.jsonp || req.xhr || !req.accepts('html')
 
   res.locals = {
     ip: req.ip
@@ -62,7 +65,7 @@ app.use(function(req, res, next) {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
     res.status(err.status || 500)
-    if (req.json) return res.json({success: false, error: err})
+    if (req.jsonp) return res.json({success: false, error: err})
     res.render('error', {
         message: err.message,
         error: {}
