@@ -17,15 +17,13 @@ app.use(favicon())
 app.use(logger('dev'))
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.set('jsonp callback name', 'jsonp');
-
 function isIp(name) {
   return name.match(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/)
 }
 
 app.use(function(req, res, next) {
 
-  req.json = req.query.jsonp || req.xhr || !req.accepts('html')
+  req.json = req.query.callback || req.xhr || !req.accepts('html')
 
   res.locals = {
     ip: req.ip
@@ -35,13 +33,15 @@ app.use(function(req, res, next) {
 
   if (res.locals.host) {
     if (isIp(res.locals.host)) {
+      res.locals.ips = [ res.locals.host ]
       res.locals.geo = geoip.lookup(res.locals.host)
       next()
     } else {
       // no ip address, resolve it and call geoip later
       dns.resolve4(res.locals.host, function(err, address) {
-        if (err) return next(err)
-        if (address[0]) {
+        if (err && err.code !== 'ENOTFOUND')
+          return next(err)
+        if (address && address[0]) {
           res.locals.geo = geoip.lookup(address[0])
           res.locals.ips = address
         }

@@ -1,7 +1,9 @@
 body {
 	padding: 0 1em;
 	font: 115% "Lucida Grande", Helvetica, Arial, sans-serif;
+	color: #222;
 }
 a { color: #00B7FF; }
 form input { font-size: 90%; }
+dl { margin: 2em 0; }
 p.footer { color: #888; font-size: 80%; margin-top: 2em; }

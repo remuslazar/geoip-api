@@ -56,13 +56,52 @@ geoip:
 
 ### JSONP Request
 
-For JSON usage specify the callback function using the `jsonp` query
+For JSON usage specify the callback function using the `callback` query
 parameter.
 
 ```
-curl 'http://localhost:3000/?host=www.google.com&jsonp=geoip'
+curl 'http://localhost:3000/?host=www.google.com&callback=geoip'
 
 typeof geoip === 'function' && geoip({"success":true,"geoip":{"range":[2915172352,2915237887],"country":"US","region":"CA","city":"Mountain View","ll":[37.4192,-122.0574]}});
+```
+
+### Success state and error codes using the JSON API
+
+Successful requests will return a JSON object with the `success` key
+set to `true`. Else, `error.code` and `error.message` will be returned
+(see below)
+
+#### Success, GeoIP data available
+
+```
+{
+	"success": true,
+	"geoip": <GeoIP data, see the example above>
+}
+```
+
+#### DNS lookup failure
+
+```
+{
+	"success": false,
+	"error": {
+		"code": 1,
+		"message": "No IPv4 DNS record found"
+	}
+}
+```
+
+#### No GeoIP data available
+
+```
+{
+	"success": false,
+	"error": {
+		"code": 2,
+		"message": "No geoip data available"
+	}
+}
 ```
 
 Technical Details

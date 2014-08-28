@@ -2,8 +2,10 @@ extends layout
 
 block content
   if geo
-    h2 GeoIP Lookup for #{host}
+    h1 GeoIP data for #{host}
     include partials/geoip
-  else
+  else if ips
     p Sorry, no GeoIP data available for #{host}!
+  else
+    p Sorry, dns lookup failed for #{host}
   include partials/form
