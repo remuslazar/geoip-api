@@ -7,6 +7,7 @@ var dns = require('dns')
 
 var routes = require('./routes/index')
 var app = express()
+var packageJson = require('./package.json')
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
@@ -29,6 +30,7 @@ app.use(function(req, res, next) {
   res.locals = {
     ip: req.ip
     , host: req.query.host || req.ip
+    , packageJson: packageJson
   }
 
   if (res.locals.host) {

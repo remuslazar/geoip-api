@@ -1,8 +1,7 @@
 body {
-  padding: .25em 1em;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+	padding: 0 1em;
+	font: 115% "Lucida Grande", Helvetica, Arial, sans-serif;
 }
-
-a {
-  color: #00B7FF;
-}
+a { color: #00B7FF; }
+form input { font-size: 90%; }
+p.footer { color: #888; font-size: 80%; margin-top: 2em; }

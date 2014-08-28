@@ -1,8 +1,9 @@
 extends layout
 
 block content
-  h2 GeoIP Lookup for #{host}
-  h3 Your Client IP Address is: #{ip}
   if geo
+    h2 GeoIP Lookup for #{host}
     include partials/geoip
+  else
+    p Sorry, no GeoIP data available for #{host}!
   include partials/form
