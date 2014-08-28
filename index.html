@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Geoip-api : A simple Express4/node.js based Web-GUI/API to lookup and display the info from the GeoLite Database.">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Geoip-api</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/remuslazar/geoip-api">View on GitHub</a>
+
+          <h1 id="project_title">Geoip-api</h1>
+          <h2 id="project_tagline">A simple Express4/node.js based Web-GUI/API to lookup and display the info from the GeoLite Database.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/remuslazar/geoip-api/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/remuslazar/geoip-api/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="geoip-lookup-web-gui-and-api" class="anchor" href="#geoip-lookup-web-gui-and-api"><span class="octicon octicon-link"></span></a>GeoIP Lookup Web-GUI and API</h1>
+
+<p>This is a simple <a href="http://expressjs.com">Express4</a> / node.js based
+Web-GUI/API to lookup and display the info from the GeoLite Database,
+which is available for free usage from <a href="http://maxmind.com/">http://maxmind.com/</a>.</p>
+
+<p>For Web-Browsers (or other clients which accept HTML) there is a
+simple GUI, for other clients or Ajax-Requests the data will be
+returned JSON formatted.</p>
+
+<p>By default the Client IP-Address will be used for the lookup, but a
+different hostname/ip can be also optionally supplied.</p>
+
+<h2>
+<a name="parameters" class="anchor" href="#parameters"><span class="octicon octicon-link"></span></a>Parameters</h2>
+
+<p>The Web-GUI uses a simple HTML form performing a <code>GET</code> request.  There
+is only one parameter available called <code>host</code>, which can be used for
+supplying a hostname or an IP-address.</p>
+
+<p>When not using a Web-Browser, do supply the data as an URL Parameter,
+e.g. <code>GET /?host=79.250.123.182</code></p>
+
+<p>Notice: When using a hostname, only the first resolved IPv4 address
+will be used for the GeoIP lookup.</p>
+
+<h2>
+<a name="jsonp-support" class="anchor" href="#jsonp-support"><span class="octicon octicon-link"></span></a>JSONP Support</h2>
+
+<p>Support for <a href="http://en.wikipedia.org/wiki/JSONP">JSONP</a> requests is
+available. Simply provide the name of the callback function as a query
+parameter called <code>jsonp</code> (see example section below)</p>
+
+<h2>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h2>
+
+<h3>
+<a name="regular-api-call" class="anchor" href="#regular-api-call"><span class="octicon octicon-link"></span></a>Regular API-Call</h3>
+
+<pre><code>$ curl -H accept:application/json http://localhost:3000/?host=www.google.com | prettyjson
+
+success: true
+geoip:
+  range:
+    - 2915172352
+    - 2915237887
+  country: US
+  region:  CA
+  city:    Mountain View
+  ll:
+    - 37.4192
+    - -122.0574
+</code></pre>
+
+<h3>
+<a name="jsonp-request" class="anchor" href="#jsonp-request"><span class="octicon octicon-link"></span></a>JSONP Request</h3>
+
+<p>For JSON usage specify the callback function using the <code>callback</code> query
+parameter.</p>
+
+<pre><code>curl 'http://localhost:3000/?host=www.google.com&amp;callback=geoip'
+
+typeof geoip === 'function' &amp;&amp; geoip({"success":true,"geoip":{"range":[2915172352,2915237887],"country":"US","region":"CA","city":"Mountain View","ll":[37.4192,-122.0574]}});
+</code></pre>
+
+<h3>
+<a name="success-state-and-error-codes-using-the-json-api" class="anchor" href="#success-state-and-error-codes-using-the-json-api"><span class="octicon octicon-link"></span></a>Success state and error codes using the JSON API</h3>
+
+<p>Successful requests will return a JSON object with the <code>success</code> key
+set to <code>true</code>. Else, <code>error.code</code> and <code>error.message</code> will be returned
+(see below)</p>
+
+<h4>
+<a name="success-geoip-data-available" class="anchor" href="#success-geoip-data-available"><span class="octicon octicon-link"></span></a>Success, GeoIP data available</h4>
+
+<pre><code>{
+    "success": true,
+    "geoip": &lt;GeoIP data, see the example above&gt;
+}
+</code></pre>
+
+<h4>
+<a name="dns-lookup-failure" class="anchor" href="#dns-lookup-failure"><span class="octicon octicon-link"></span></a>DNS lookup failure</h4>
+
+<pre><code>{
+    "success": false,
+    "error": {
+        "code": 1,
+        "message": "No IPv4 DNS record found"
+    }
+}
+</code></pre>
+
+<h4>
+<a name="no-geoip-data-available" class="anchor" href="#no-geoip-data-available"><span class="octicon octicon-link"></span></a>No GeoIP data available</h4>
+
+<pre><code>{
+    "success": false,
+    "error": {
+        "code": 2,
+        "message": "No geoip data available"
+    }
+}
+</code></pre>
+
+<h2>
+<a name="technical-details" class="anchor" href="#technical-details"><span class="octicon octicon-link"></span></a>Technical Details</h2>
+
+<p>This API uses the node-geoip module, which itself includes the GeoLite
+database (the data will be downloaded/installed after the npm install
+step automatically).</p>
+
+<h2>
+<a name="references" class="anchor" href="#references"><span class="octicon octicon-link"></span></a>References</h2>
+
+<ol>
+<li><a href="https://github.com/bluesmoon/node-geoip">node-geoip library</a></li>
+</ol><h2>
+<a name="copyright" class="anchor" href="#copyright"><span class="octicon octicon-link"></span></a>Copyright</h2>
+
+<p><code>geoip-api</code> is Copyright 2014 Remus Lazar <a href="mailto:remus@lazar.info">remus@lazar.info</a> and the
+latest version of the code is available at
+<a href="https://github.com/remuslazar/geoip-api">https://github.com/remuslazar/geoip-api</a></p>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>There are two licenses for the code and data. See the LICENSE file for details.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Geoip-api maintained by <a href="https://github.com/remuslazar">remuslazar</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
