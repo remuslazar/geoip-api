@@ -46,6 +46,35 @@ returned JSON formatted.</p>
 different hostname/ip can be also optionally supplied.</p>
 
 <h2>
+<a name="install--setup" class="anchor" href="#install--setup"><span class="octicon octicon-link"></span></a>Install &amp; Setup</h2>
+
+<p>Do a <code>git clone</code> and <code>npm install --production</code>. The last step will
+download, install and unpack the GeoIP Lite database automatically.</p>
+
+<h3>
+<a name="run" class="anchor" href="#run"><span class="octicon octicon-link"></span></a>Run</h3>
+
+<p>To run the application in production mode, simply provide the local
+PORT for Express, e.g.:</p>
+
+<p><code>PORT=3000 NODE_ENV=production npm start</code></p>
+
+<p>Or using forever</p>
+
+<p><code>PORT=3000 NODE_ENV=production forever start geoip-api/bin/www</code></p>
+
+<h3>
+<a name="proxy-setup" class="anchor" href="#proxy-setup"><span class="octicon octicon-link"></span></a>Proxy Setup</h3>
+
+<p>Proxy Support is not enabled by default but could be enabled using the
+<code>PROXY=1</code> env setting. When enabled, the app will use the provided
+client IP address from the <em>first upstream proxy</em> in the chain
+(e.g. your nginx or other reverse proxy).</p>
+
+<p>Make sure that your proxy setup will provide the client ip address
+information using the <code>X-Forwarded-For</code> HTTP headers.</p>
+
+<h2>
 <a name="parameters" class="anchor" href="#parameters"><span class="octicon octicon-link"></span></a>Parameters</h2>
 
 <p>The Web-GUI uses a simple HTML form performing a <code>GET</code> request.  There
