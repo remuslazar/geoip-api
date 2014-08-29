@@ -12,6 +12,33 @@ returned JSON formatted.
 By default the Client IP-Address will be used for the lookup, but a
 different hostname/ip can be also optionally supplied.
 
+Install & Setup
+---------------
+
+Do a `git clone` and `npm install --production`. The last step will
+download, install and unpack the GeoIP Lite database automatically.
+
+### Run
+
+To run the application in production mode, simply provide the local
+PORT for Express, e.g.:
+
+`PORT=3000 NODE_ENV=production npm start`
+
+Or using forever
+
+`PORT=3000 NODE_ENV=production forever start geoip-api/bin/www`
+
+### Proxy Setup
+
+Proxy Support is not enabled by default but could be enabled using the
+`PROXY=1` env setting. When enabled, the app will use the provided
+client IP address from the *first upstream proxy* in the chain
+(e.g. your nginx or other reverse proxy).
+
+Make sure that your proxy setup will provide the client ip address
+information using the `X-Forwarded-For` HTTP headers.
+
 
 Parameters
 ----------

@@ -17,17 +17,27 @@ app.use(favicon())
 app.use(logger('dev'))
 app.use(express.static(path.join(__dirname, 'public')))
 
+// enable proxy support
+if (process.env.PROXY)
+  app.enable('trust proxy')
+
 function isIp(name) {
-  return name.match(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/)
+  return name.match(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/) || // ipv4
+  name.match(/^[0-9a-f:]{5,}$/i) // ipv6
 }
 
 app.use(function(req, res, next) {
 
   req.json = req.query.callback || req.xhr || !req.accepts('html')
 
+  // if proxy support is enabled, use the first provided ip
+  // in the proxy chain.
+  var ip = app.get('trust proxy') && req.ips && req.ips.length ?
+    req.ips[req.ips.length-1] : req.ip
+
   res.locals = {
-    ip: req.ip
-    , host: req.query.host || req.ip
+    ip: ip
+    , host: req.query.host || ip // use client ip by default
     , packageJson: packageJson
   }
 
