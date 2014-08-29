@@ -58,7 +58,12 @@ JSONP Support
 
 Support for [JSONP](http://en.wikipedia.org/wiki/JSONP) requests is
 available. Simply provide the name of the callback function as a query
-parameter called `jsonp` (see example section below)
+parameter called `callback`.
+
+While using jQuery, simply set the `dataType` param to `jsonp` and
+[jQuery.ajax](http://api.jquery.com/jQuery.ajax/) will automatically
+append the callback parameter, creates a random callback function in
+the global scope for you behind the scenes.
 
 Example
 -------
@@ -83,7 +88,7 @@ geoip:
 
 ### JSONP Request
 
-For JSON usage specify the callback function using the `callback` query
+For JSONP usage specify the callback function using the `callback` query
 parameter.
 
 ```
