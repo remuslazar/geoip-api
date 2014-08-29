@@ -92,7 +92,12 @@ will be used for the GeoIP lookup.</p>
 
 <p>Support for <a href="http://en.wikipedia.org/wiki/JSONP">JSONP</a> requests is
 available. Simply provide the name of the callback function as a query
-parameter called <code>jsonp</code> (see example section below)</p>
+parameter called <code>callback</code>.</p>
+
+<p>While using jQuery, simply set the <code>dataType</code> param to <code>jsonp</code> and
+<a href="http://api.jquery.com/jQuery.ajax/">jQuery.ajax</a> will automatically
+append the callback parameter, creates a random callback function in
+the global scope for you behind the scenes.</p>
 
 <h2>
 <a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h2>
@@ -118,7 +123,7 @@ geoip:
 <h3>
 <a name="jsonp-request" class="anchor" href="#jsonp-request"><span class="octicon octicon-link"></span></a>JSONP Request</h3>
 
-<p>For JSON usage specify the callback function using the <code>callback</code> query
+<p>For JSONP usage specify the callback function using the <code>callback</code> query
 parameter.</p>
 
 <pre><code>curl 'http://localhost:3000/?host=www.google.com&amp;callback=geoip'
